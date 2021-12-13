@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>vue test</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <word-relay number="0"></word-relay>
+        <word-relay number="10"></word-relay>
+        <word-relay number="100"></word-relay>
+    </div>
+</body>
+<script>
+    Vue.component('word-relay', {
+        template: `
+                <div id="app">
+                    <div>{{num}}</div>
+                    <button v-on:click="numCountUp">up</button><button v-on:click="numCountDown">down</button>
+                </div>
+            `,
+        props: ['number'],
+        data(){
+            return {
+                num : this.props.number,
+            }
+        },
+        methods: {
+            numCountUp(){
+                this.num++;
+            },
+            numCountDown(){
+                this.num = (this.num <= 0) ? 0 : this.num - 1;
+            }
+        }
+    })
+</script>
+<script>
+    let app = new Vue({
+        el: '#app',
+    })
+</script>
+</html>

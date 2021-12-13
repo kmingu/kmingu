@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        #box1{width: 500px; background-color: #eaeaea; position: relative; border-left: 4px solid #ff6666; padding-left: 25px }
+        #box1::after{position: absolute; left:-12px; width: 20px; height: 20px; top: 20px; content: '!'; text-align: center;
+            border-radius: 100%; color: #eaeaea; font-weight: bold; background-color: #ff6666; opacity: 0; transition: 0.5s}
+        #box1:hover::after{opacity: 1; transition: 0.5s}
+    </style>
+    <div id="box">
+    </div>
+
+    <script src="dir/app.js"></script>
+    <script>
+        let userComponent = {
+            props: ['userData'],
+            template: `
+                <h1>local component <br> {{userData}}</h1>
+            `
+        }
+        new Vue({
+            el: '#box',
+            data: {
+                userData: 'data Sample',
+            },
+            methods:{
+
+            },
+            template: 
+                `<div id="box1">
+                    <user-component v-bind:user-data="userData">< /user-component>
+                    <input type="text" v-model="userData">
+                </div>
+                `,
+            components:{
+                'user-component': userComponent,
+            }
+        })
+    </script>
+</body>
+</html>

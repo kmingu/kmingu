@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>vue test</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>td</div>
+    <form @submit.prevent="valueCheck">
+        <input type="number" minlength="4" maxlength="4" v-model="userNum" ref="input">
+        <input type="submit" value="입력">
+    </form>
+    <div>{{result}}</div>
+    {{tryNums.length}}회 시도<br>
+    {{ballCnt}}볼 / {{strikeCnt}}스트라이크
+
+    <ul>
+        <ol v-for="data in tryNums">{{data.num}} - {{data.ball}}볼 {{data.strike}}스트라이크</ol>
+    </ul>
+</div>
+</body>
+<script>
+    function getRandomNum(o){
+        let genNum = [];
+        for(let i = 0; i < o; i++){
+            let inputNum = Math.floor(Math.random()*9+1);
+            while(genNum.includes(inputNum)){
+                inputNum = Math.floor(Math.random()*9+1);
+            }
+            genNum.push(inputNum)
+        }
+        return genNum.join('');
+    }
+    const app = new Vue({
+        el: '#app',
+        data: {
+            tryNums: [],
+            baseNum: getRandomNum(4),
+            userNum: '',
+            result: '',
+            strikeCnt: 0,
+            ballCnt: 0,
+        },
+        methods: {
+            valueCheck(){
+                console.log(this.baseNum)
+                this.strikeCnt = 0;
+                this.ballCnt = 0;
+
+                if(this.baseNum === this.userNum){
+                    this.result = "oo";
+                    this.baseNum = getRandomNum(4);
+                    this.tryNums = [];
+                }else if(this.tryNums.length >= 10){
+                    this.result = `실패, 정답은 ${this.baseNum}`
+                    this.baseNum = getRandomNum(4);
+                    this.tryNums = [];
+                }
+                for(let i = 0; i < this.baseNum.length; i++){
+                    for(let j = 0; j < this.userNum.length; j++){
+                        if(this.baseNum[i] === this.userNum[j]){
+                            if(this.baseNum.indexOf(this.baseNum[i]) === this.userNum.indexOf(this.userNum[j]))
+                                this.strikeCnt++;
+                            else
+                                this.ballCnt++;
+                        }
+                    }
+                }
+                this.tryNums.push({
+                    num: this.userNum,
+                    strike: this.strikeCnt,
+                    ball: this.ballCnt,
+                });
+                this.userNum = '';
+            }
+        },
+    })
+</script>
+</html>
